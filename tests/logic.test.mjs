@@ -38,4 +38,4 @@ test('korrupt lagring och gamla id:n kan inte krascha aktivt prov',()=>{
 test('ordningsövningar startar aldrig lösta och kräver alla steg',()=>{
  for(const e of exercises){for(let i=0;i<30;i++){const a=shuffledSteps(e.steps);assert.equal(a.length,e.steps.length);assert.equal(new Set(a).size,e.steps.length);assert.equal(checkOrder(a,e.steps.length),false);}assert.equal(checkOrder(e.steps.map((_,i)=>i),e.steps.length),true);assert.equal(checkOrder([0],e.steps.length),false);}
 });
-test('scenarier räknas som skrivna först när alla fyra delar har text',()=>{assert.equal(hasAnswer('  '),false);assert.equal(hasAnswer('svar'),true);assert.equal(hasAnswer(['a','','c','d']),false);assert.equal(hasAnswer(['a','b','c','d']),true);});
+test('scenarier räknas som skrivna först när alla fyra delar har text',()=>{assert.equal(hasAnswer('  '),false);assert.equal(hasAnswer('svar'),true);assert.equal(hasAnswer([]),false);assert.equal(hasAnswer(['a']),false);assert.equal(hasAnswer(['a','','c','d']),false);assert.equal(hasAnswer(['a','b','c','d']),true);});

@@ -36,4 +36,4 @@ export function sanitizeState(raw){
  s.history=Array.isArray(raw.history)?raw.history.filter(x=>obj(x)&&Number.isFinite(x.at)&&Number.isInteger(x.known)&&x.known>=0&&x.known<=12).slice(-10):[];
  return s;
 }
-export function hasAnswer(answer){return Array.isArray(answer)?answer.every(v=>typeof v==='string'&&v.trim().length>0):typeof answer==='string'&&answer.trim().length>0;}
+export function hasAnswer(answer){return Array.isArray(answer)?answer.length===4&&answer.every(v=>typeof v==='string'&&v.trim().length>0):typeof answer==='string'&&answer.trim().length>0;}
