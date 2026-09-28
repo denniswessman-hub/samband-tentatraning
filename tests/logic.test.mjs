@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {topics,questions} from '../data.mjs';
 import {scenarios,exercises} from '../practice.mjs';
-import {items,itemMap,blankState,rate,queue,makeExam,sanitizeState,shuffledSteps,checkOrder,hasAnswer} from '../logic.mjs';
+import {items,itemMap,blankState,rate,queue,makeExam,sanitizeState,shuffledSteps,checkOrder,hasAnswer,assessment,meetsThreshold} from '../logic.mjs';
+import {examParts,focusedQuestions,practicalTasks} from '../examination.mjs';
 
 test('31 källkopplade delmoment med tre distinkta grundfrågor vardera',()=>{
  assert.equal(topics.length,31);assert.equal(questions.length,93);
@@ -21,7 +22,7 @@ test('missat/delvis läggs i kön; självständigt korrekt tas bort och behärsk
  rate(s,'s1',2,50);rate(s,'e1',2,60);assert.deepEqual(queue(s),[]);
  assert.throws(()=>rate(s,'unknown',0));assert.throws(()=>rate(s,'01-1',4));
 });
-test('100 provpass har alltid 12 unika frågor och fast fördelning utan godkäntgräns',()=>{
+test('100 pass i frågedelen har 12 unika uppgifter och avsedd bredd',()=>{
  const selections=new Set();
  for(let i=0;i<100;i++){const e=makeExam();assert.equal(e.ids.length,12);assert.equal(new Set(e.ids).size,12);const kinds=e.ids.reduce((a,id)=>{const k=itemMap.get(id).kind;a[k]=(a[k]||0)+1;return a;},{});assert.deepEqual(kinds,{...kinds,begrepp:3,öppen:4,handhavande:3,scenario:2});assert.equal(e.submitted,false);assert.equal(e.passMark,undefined);selections.add(e.ids.join());}
  assert.ok(selections.size>95);
@@ -39,3 +40,30 @@ test('ordningsövningar startar aldrig lösta och kräver alla steg',()=>{
  for(const e of exercises){for(let i=0;i<30;i++){const a=shuffledSteps(e.steps);assert.equal(a.length,e.steps.length);assert.equal(new Set(a).size,e.steps.length);assert.equal(checkOrder(a,e.steps.length),false);}assert.equal(checkOrder(e.steps.map((_,i)=>i),e.steps.length),true);assert.equal(checkOrder([0],e.steps.length),false);}
 });
 test('scenarier räknas som skrivna först när alla fyra delar har text',()=>{assert.equal(hasAnswer('  '),false);assert.equal(hasAnswer('svar'),true);assert.equal(hasAnswer([]),false);assert.equal(hasAnswer(['a']),false);assert.equal(hasAnswer(['a','','c','d']),false);assert.equal(hasAnswer(['a','b','c','d']),true);});
+
+test('de fyra skriftliga delarna har separata urval, källor och gränser',()=>{
+ assert.deepEqual(examParts.map(p=>p.threshold),[80,100,100,100]);
+ assert.equal(focusedQuestions.length,67);
+ for(const part of examParts){const x=makeExam(Math.random,part.id);assert.equal(x.part,part.id);assert.equal(x.ids.length,part.count);assert.equal(new Set(x.ids).size,part.count);if(part.id!=='fragor')for(const id of x.ids)assert.equal(itemMap.get(id).part,part.id);assert.equal(assessment(x).met,null);assert.equal(assessment(x).threshold,part.threshold);}
+ for(const q of focusedQuestions){assert.ok(q.sources.every(s=>s.title&&s.location));assert.ok(q.answer.length);assert.ok(topics.some(t=>t.id===q.topic));}
+ assert.equal(practicalTasks.length,7);assert.equal(new Set(practicalTasks.map(t=>t.id)).size,7);for(const t of practicalTasks){assert.ok(t.checks.length);assert.ok(t.sources.length);if(t.exercise)assert.ok(exercises.some(e=>e.id===t.exercise));}
+ assert.throws(()=>makeExam(Math.random,'unknown'));
+});
+
+test('80 procent och 100 procent avgörs utan avrundning eller delpoäng',()=>{
+ assert.equal(meetsThreshold(8,10,80),true);assert.equal(meetsThreshold(7,10,80),false);assert.equal(meetsThreshold(799,1000,80),false);
+ assert.equal(meetsThreshold(9,12,80),false);assert.equal(meetsThreshold(10,12,80),true);assert.equal(meetsThreshold(28,29,100),false);assert.equal(meetsThreshold(29,29,100),true);assert.equal(meetsThreshold(0,0,80),false);
+ const q=makeExam();q.ids.forEach((id,i)=>q.ratings[id]=i<9?2:1);assert.equal(assessment(q).met,false);q.ratings[q.ids[9]]=2;assert.equal(assessment(q).met,true);
+ const b=makeExam(Math.random,'nationell');b.ids.forEach(id=>b.ratings[id]=2);assert.equal(assessment(b).met,true);b.ratings[b.ids[0]]=1;assert.equal(assessment(b).met,false);delete b.ratings[b.ids[0]];assert.equal(assessment(b).met,null);
+ assert.equal(assessment(q).met,true); // Ett annat delresultat påverkas inte.
+});
+
+test('uppgradering bevarar äldre svar, pågående tolvpassets läge och historik',()=>{
+ const old={schema:1,status:{'01':2},reviews:{'01-1':{grade:0,at:1,attempts:2}},drafts:{'01-1':'Mitt svar'},exam:makeExam(),history:[{at:10,known:9}]};delete old.exam.part;old.exam.index=5;old.exam.answers[old.exam.ids[0]]='Sparat provsvar';
+ const restored=sanitizeState(old);assert.deepEqual(restored.status,old.status);assert.deepEqual(restored.drafts,old.drafts);assert.deepEqual(restored.reviews,old.reviews);assert.deepEqual(restored.exam.answers,old.exam.answers);assert.equal(restored.exam.index,5);assert.equal(restored.exam.part,'fragor');assert.deepEqual(restored.history,[{at:10,part:'fragor',known:9}]);assert.deepEqual(restored.practical,{});
+});
+
+test('nya delpass, repetitionskort och praktisk träning överlever omladdning',()=>{
+ for(const part of examParts){const s=blankState();s.exam=makeExam(Math.random,part.id);s.exam.index=s.exam.ids.length-1;s.exam.answers[s.exam.ids[0]]='<b>Eget svar</b>';s.exam.ratings[s.exam.ids[0]]=1;s.practical.p1=2;s.history=[{at:1,part:part.id,known:part.count}];rate(s,'bn-01',0,1);rate(s,'tu-kom',1,2);assert.deepEqual(sanitizeState(JSON.parse(JSON.stringify(s))),s);assert.deepEqual(queue(s),['bn-01','tu-kom']);}
+ const s=blankState();s.exam=makeExam(Math.random,'nationell');s.exam.ids[0]='01-1';assert.equal(sanitizeState(s).exam,null);s.exam=makeExam();s.exam.part='unknown';assert.equal(sanitizeState(s).exam,null);
+});

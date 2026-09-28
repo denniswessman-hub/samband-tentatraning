@@ -1,4 +1,4 @@
-export const VERSION = '1.0.0';
+export const VERSION = '1.1.0';
 export const CHECKED = '2026-09-28';
 export const LAB = 'https://denniswessman-hub.github.io/samband/';
 export const precedence = 'Aktuell sambandstablå, lokal programmering och lärarnas instruktioner har alltid företräde.';
