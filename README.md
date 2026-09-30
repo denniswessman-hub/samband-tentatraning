@@ -4,7 +4,7 @@ Separat tentaplattform för aktiv återgivning och förberedelse inför skriftli
 
 **Webbplats:** https://denniswessman-hub.github.io/samband-tentatraning/
 
-Version 1.1.0 omfattar alla 31 delmoment i kurslistan, 93 källkopplade grundfrågor, 58 bokstaveringskort, 9 tillämpningar av trafikuttryck, 8 fiktiva scenarier och 12 stegövningar. En separat praktisk checklista täcker de sju områden examinatorn angett.
+Version 1.2.0 omfattar alla 31 delmoment i kurslistan, 93 källkopplade grundfrågor, 58 bokstaveringskort, 9 tillämpningar av trafikuttryck, 8 fiktiva scenarier och 12 stegövningar. En separat praktisk checklista täcker de sju områden examinatorn angett. Infofliken `#praktisk-info` kompletterar med lektionsgenomgången 2026-09-30.
 
 ## Examinationsbeskedet
 
@@ -12,7 +12,7 @@ Examinatorns information, återgiven av användaren 2026-09-28: examination 2026
 
 Antal frågor, poängfördelning och tid per del framgår inte av beskedet. Plattformens urval är därför uttryckligen träningsurval. Självbedömningen räknar varje övningsuppgift lika: endast **Kunde själv** räknas som helt rätt. Delresultat visas först när alla svar är bedömda och vägs aldrig samman mellan delar. Resultatet är inte ett examinationsbetyg. Praktikens sju områden räknas inte om till en påhittad poängskala.
 
-## Sex träningslägen
+## Träningslägen och praktisk info
 
 - **Tentakollen:** självvald status Inte tränat, Påbörjat eller Behärskat per delmoment.
 - **Minnesträning:** öppna frågor, eget skriftligt eller muntligt svar, dolt facit och självbedömning. Separata fokuspass för båda bokstaveringsalfabeten och trafikuttrycken.
@@ -20,6 +20,7 @@ Antal frågor, poängfördelning och tid per del framgår inte av beskedet. Plat
 - **Scenario & RLC:** egna svar om åtgärd, radiomeddelande, talgrupp/funktion och RLC:s informationsbehov.
 - **Skriftliga provpass:** välj frågedel (12 slumpade uppgifter: 3 begrepp, 4 öppna kunskapsfrågor, 3 handhavandefrågor, 2 scenarier), nationell bokstavering (29 bokstäver), internationell bokstavering (29 bokstäver enligt kursmaterialet, inklusive Å/Ä/Ö) eller trafikuttryck (9 situationer). Facit efter avslut. Separat sparat resultat för varje del, mål 80/100/100/100 %. Det går att svara på papper.
 - **Praktisk examination:** sju områden med övningsstöd, källor, länkar till relevanta webbövningar och separat status för träning på handterminal.
+- **Info: praktiska provet:** sju lektionsmoment med stegvisa instruktioner och slutkontroller: fyra grupper i Egen på DV7, Projekt 1/order i skanninglista, gateway, ISSI-kontakt, SDS, MSISDN och terminalens ISSI. Gatewayinstruktionen skiljer mellan fordon i Gateway och handterminal i direktläge. Lektionsanteckningens ”Skicka MSISDN” markeras som oklar; möjliga tekniska handgrepp visas villkorligt och presenteras inte som fastställda tentakrav. Skillnaden mellan lektionslistans fordonsterminal och tidigare examinationsbeskedets handterminal anges öppet. Menyvägar och symboler har kontrollerats mot text och relevanta bilder i kursmaterialet 2026-09-30. Inga originalbilder publiceras.
 
 ## Integritet och källor
 
@@ -41,6 +42,7 @@ Inga paket behöver installeras. Kör `node --test tests/*.test.mjs` för inneh�
 - `practice.mjs`: scenarier och stegövningar.
 - `examination.mjs`: examinationsvillkor, bokstavering, trafikuttryck och sju praktiska områden.
 - `examination-view.mjs`: examinationsöversikt, delval och praktisk checklista.
+- `lesson-info.mjs`: lektionslistan 2026-09-30, tekniska instruktioner, källor och markerade oklarheter.
 - `logic.mjs`: resultat, kö, provurval och validering av sparade data.
 - `app.mjs`: gränssnitt, navigation och lokal lagring.
 - `style.css`: mobil- och datorlayout.

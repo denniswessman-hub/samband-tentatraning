@@ -1,1 +1,1 @@
-{"name":"samband-tentatraning","version":"1.1.0","private":true,"type":"module","scripts":{"test":"node --test tests/*.test.mjs"},"description":"Fristående lokal tentaträning i sambandstjänst. Statisk GitHub Pages-app utan externa körberoenden."}
+{"name":"samband-tentatraning","version":"1.2.0","private":true,"type":"module","scripts":{"test":"node --test tests/*.test.mjs"},"description":"Fristående lokal tentaträning i sambandstjänst. Statisk GitHub Pages-app utan externa körberoenden."}
