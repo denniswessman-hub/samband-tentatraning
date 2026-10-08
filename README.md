@@ -4,7 +4,7 @@ Separat tentaplattform för aktiv återgivning och förberedelse inför skriftli
 
 **Webbplats:** https://denniswessman-hub.github.io/samband-tentatraning/
 
-Version 1.2.0 omfattar alla 31 delmoment i kurslistan, 93 källkopplade grundfrågor, 58 bokstaveringskort, 9 tillämpningar av trafikuttryck, 8 fiktiva scenarier och 12 stegövningar. En separat praktisk checklista täcker de sju områden examinatorn angett. Infofliken `#praktisk-info` kompletterar med lektionsgenomgången 2026-09-30.
+Version 1.3.0 omfattar alla 31 delmoment i kurslistan, 93 källkopplade grundfrågor, 58 bokstaveringskort, 9 tillämpningar av trafikuttryck, 8 fiktiva scenarier och 12 stegövningar. En separat praktisk checklista täcker de sju områden examinatorn angett. Infofliken `#praktisk-info` visar bildens träningsförslag från 2026-10-08: 13 praktiska och 8 skriftliga punkter.
 
 ## Examinationsbeskedet
 
@@ -20,15 +20,15 @@ Antal frågor, poängfördelning och tid per del framgår inte av beskedet. Plat
 - **Scenario & RLC:** egna svar om åtgärd, radiomeddelande, talgrupp/funktion och RLC:s informationsbehov.
 - **Skriftliga provpass:** välj frågedel (12 slumpade uppgifter: 3 begrepp, 4 öppna kunskapsfrågor, 3 handhavandefrågor, 2 scenarier), nationell bokstavering (29 bokstäver), internationell bokstavering (29 bokstäver enligt kursmaterialet, inklusive Å/Ä/Ö) eller trafikuttryck (9 situationer). Facit efter avslut. Separat sparat resultat för varje del, mål 80/100/100/100 %. Det går att svara på papper.
 - **Praktisk examination:** sju områden med övningsstöd, källor, länkar till relevanta webbövningar och separat status för träning på handterminal.
-- **Info: praktiska provet:** sju lektionsmoment med stegvisa instruktioner och slutkontroller: fyra grupper i Egen på DV7, Projekt 1/order i skanninglista, gateway, ISSI-kontakt, SDS, MSISDN och terminalens ISSI. Gatewayinstruktionen skiljer mellan fordon i Gateway och handterminal i direktläge. Lektionsanteckningens ”Skicka MSISDN” markeras som oklar; möjliga tekniska handgrepp visas villkorligt och presenteras inte som fastställda tentakrav. Skillnaden mellan lektionslistans fordonsterminal och tidigare examinationsbeskedets handterminal anges öppet. Menyvägar och symboler har kontrollerats mot text och relevanta bilder i kursmaterialet 2026-09-30. Inga originalbilder publiceras.
+- **Info inför examinationen:** bildens två blå ramar med exakt rubriktext, punkttext och ordning, återskapade som tillgänglig HTML. Alla 21 punkter öppnar instruktioner eller svar med källor. Innehåller rättelser av duplex/semiduplex, RAPS/DMO, ljudväg, direktvalsmeny och skanningens markeringar samt komplettering om gateway, förvaring, förlust av radio och nätkapacitet. Förslagslistan hålls åtskild från det tidigare examinationsbeskedet. De tidigare konkreta övningarna med fyra grupper i Egen på DV 7 och Projekt 1/order i skanninglista ingår. Ingen originalbild publiceras.
 
 ## Integritet och källor
 
-Resultat, kö och svar sparas endast lokalt med nyckeln `samband-tentatraning:v1`. Version 1.1 bevarar tidigare status, svar, repetitionskö och pågående tolvpassets position; äldre prov behandlas som frågedel. Nya bokstaveringskort och trafikuttryck använder samma kö. Ingen server, analysmätning, inloggning, mikrofon eller extern resurs behövs under träningen. GitHub Pages hanterar vanliga tekniska uppgifter när webbplatsen hämtas. Lokal lagring kan försvinna om webbläsardata rensas.
+Resultat, kö och svar sparas endast lokalt med nyckeln `samband-tentatraning:v1`. Version 1.3 behåller lagringsformat och uppgifts-id:n. Version 1.1 bevarar tidigare status, svar, repetitionskö och pågående tolvpassets position; äldre prov behandlas som frågedel. Nya bokstaveringskort och trafikuttryck använder samma kö. Ingen server, analysmätning, inloggning, mikrofon eller extern resurs behövs under träningen. GitHub Pages hanterar vanliga tekniska uppgifter när webbplatsen hämtas. Lokal lagring kan försvinna om webbläsardata rensas.
 
-Original från Canvas och privata meddelanden ingår inte i repot. Inga verkliga person-, ärende-, telefon- eller terminaluppgifter används. Alla exempel använder fiktiva platser och platshållare. Offentliga RLC-anropsbeteckningar och generella funktions-/indexnummer förekommer som kursbegrepp.
+Original från Canvas och privata meddelanden ingår inte i repot. Inga verkliga person-, ärende-, privata telefon- eller terminaluppgifter används. Servicedesks gemensamma nummer återges som en uppgift ur kursmaterialet, med hänvisning till aktuell intern kontaktväg. Alla exempel använder fiktiva platser och platshållare. Offentliga RLC-anropsbeteckningar och generella funktions-/indexnummer förekommer som kursbegrepp.
 
-Varje uppgift visar källfil/avsnitt och delmoment. Frågor och scenarier är egna bearbetningar av Sambandslabbets kursunderlag. Bildinstruktionerna för skanninglistor och direktvalsprogrammering har lästs visuellt. Källunderlaget granskades 2026-09-28. Plattformen är inte officiellt godkänd av lärosätet eller Polismyndigheten.
+Varje uppgift visar källfil/avsnitt och delmoment. Frågor och scenarier är egna bearbetningar av Sambandslabbets kursunderlag. Bildinstruktionerna för skanninglistor och direktvalsprogrammering har lästs visuellt. Grundfrågornas källunderlag granskades 2026-09-28. Den utökade infofliken kontrollerades 2026-10-08, inklusive relevanta menybilder och MSB:s offentliga Vägledning i Rakel för nätkapacitet. Plattformen är inte officiellt godkänd av lärosätet eller Polismyndigheten.
 
 Aktuell sambandstablå, lokal programmering och lärarnas instruktioner har alltid företräde. Examinationsbeskedet är inarbetat i version 1.1. T4-övningstentan har inte tillförts. Om den tillkommer justeras formulering, omfattning och svårighetsgrad med bevarade uppgifts-id:n. Kopiera inte examinationsfrågor okritiskt.
 
@@ -42,7 +42,8 @@ Inga paket behöver installeras. Kör `node --test tests/*.test.mjs` för inneh�
 - `practice.mjs`: scenarier och stegövningar.
 - `examination.mjs`: examinationsvillkor, bokstavering, trafikuttryck och sju praktiska områden.
 - `examination-view.mjs`: examinationsöversikt, delval och praktisk checklista.
-- `lesson-info.mjs`: lektionslistan 2026-09-30, tekniska instruktioner, källor och markerade oklarheter.
+- `exam-preview.mjs`: bildens två listor, 21 källkopplade svar och infoflikens gränssnitt.
+- `lesson-info.mjs`: bevarat lektionsunderlag 2026-09-30; de tekniska stegen återanvänds i den nya infofliken.
 - `logic.mjs`: resultat, kö, provurval och validering av sparade data.
 - `app.mjs`: gränssnitt, navigation och lokal lagring.
 - `style.css`: mobil- och datorlayout.

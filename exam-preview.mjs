@@ -1,0 +1,235 @@
+import {focusedQuestions} from './examination.mjs';
+import {lessonTasks} from './lesson-info.mjs';
+
+export const previewDate='2026-10-08';
+const ref=(title,location)=>({title,location});
+const handbook=(location)=>ref('Kunskapsbanken SC21, version 1.0 (2023-01-11)',location);
+const lesson=id=>lessonTasks.find(item=>item.id===id);
+const copiedSteps=id=>lesson(id).steps.map(([title,text])=>`${title}: ${text}`);
+const alphabets=focusedQuestions.filter(q=>q.part==='nationell').map((q,i)=>[
+ [...'ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ'][i],q.answer[0],focusedQuestions.filter(q=>q.part==='internationell')[i].answer[0],
+]);
+
+// Rubriker och ordning är transkriberade från användarens bild. Svaren är bearbetade kursreferat.
+export const previewGroups=[
+ {id:'hands',title:'Förslag på vad du kan knappa på:',label:'Praktiska handgrepp',items:[
+  {id:'talgruppsbyte',title:'Talgruppsbyte på flera olika sätt',topics:['08','09'],
+   lead:'Visa flera vägar till samma talgrupp och kontrollera namnet i grunddisplayen efter varje byte.',
+   steps:[
+    'Via gruppträdet: tryck en gång på mittvalsknappen. Byt mapp med pilarna och talgrupp inom mappen med vredet. Bekräfta med grön lur, PTT eller genom att vänta några sekunder enligt kursens terminal.',
+    'Via index: tryck en gång på mittvalsknappen och skriv talgruppens indexnummer. Bekräfta gruppvalet och kontrollera namnet. Ett gruppindex är inte ett ISSI- eller MSISDN-nummer.',
+    'Via menyn: pil ned från grunddisplayen → Talgrupper → Mappar. Bläddra till rätt mapp, välj Öppna och välj talgruppen.',
+    'Via direktval: håll inne det direktval där gruppen eller listan är programmerad. DV 6 växlar mellan de två senaste talgrupperna.',
+   ],note:'På fordonsterminal/POLMAN motsvaras mittvalsknappen av ett tryck på vredet. Skilj en fristående talgrupp från en skanninglista med liknande namn.',
+   sources:[ref('Byta talgrupp.pdf','s. 2–4, 7 och 10')]},
+  {id:'direktval',title:'Direktval',topics:['06','15'],
+   lead:'Direktval aktiveras med långt tryck. Korta tryck skriver siffror eller bokstäver. Tabellen visar kursens grundprogrammering; den ändras inte automatiskt när du reser till en annan region.',
+   table:{headers:['Knapp','Funktion i kursmaterialet'],rows:[
+    ['DV 1','Förbestämd skanninglista. Normalpassning kräver också att skanning är på. Programmerbar till en skanninglista.'],
+    ['DV 2','Anropsbegäran till hemma-RLC, även när du befinner dig i en annan region.'],
+    ['DV 3','Första insatstalgruppen för terminalens programmerade region.'],
+    ['DV 4','Första insatstalgruppen för terminalens programmerade polisområde.'],
+    ['DV 5','Andra insatstalgruppen för terminalens programmerade polisområde.'],
+    ['DV 6','Växlar mellan de två senast använda talgrupperna.'],
+    ['DV 7','Programmerbart. SAMV Pol i grundprogrammeringen; kan till exempel användas för Egen.'],
+    ['DV 8','Välj nätläge (TMO) eller direktläge (DMO). På fordonsterminal/POLMAN finns även Gateway och Repeater enligt kursens utrustning.'],
+    ['DV 9','RAPS-talgrupp. Programmerbar till en RAPS-talgrupp enligt aktuell sambandstablå.'],
+    ['DV 0','Byt ljudväg, exempelvis yttre högtalare ↔ hördel på handterminalen. Fordon/POLMAN använder fordonets ljudutrustning/monofon.'],
+    ['*','Knapplås.'],['#','Smartmeny.'],
+   ]},
+   correction:'RAPS och DMO är olika saker. DMO 1 är inte ett exempel på RAPS. DV 0 ändrar var ljudet hörs, inte samtalets trafikläge mellan duplex och semiduplex.',
+   sources:[ref('knappologi och display-1 (1).pdf','s. 18–31'),ref('Direktval programmering.pdf','s. 2'),ref('Driftsätt.pdf','driftsätt i hand- och fordonsterminal'),ref('Fordonsterminal lång-1.pdf','direktval: ljudväg till monofon')]},
+  {id:'skannade',title:'Titta på skanninglistor (skannade talgrupper)',topics:['14','07'],
+   lead:'Skilj listorna som finns sparade från vyn som visar vad terminalen skannar just nu.',
+   steps:[
+    'Via menyn: pil ned → Talgrupper → Skanningslistor → fliken Skannade talgrupper → Öppna. Läs grupperna i den aktuella passningen.',
+    'Via smartmenyn: långt tryck på # → Skannade talgrupper. I kursens menybild är genvägen 6; välj efter texten om din programmering skiljer sig.',
+    'Läs symbolerna: punkt i ringen anger vald displaygrupp. Röd triangel betyder hög prioritet och grön låg prioritet. Svarta prioritetspilar visar bakgrundstalgrupper som användaren inte kan ändra.',
+    'För att välja en annan sparad lista: ett tryck på mittvalsknappen → huvudmappen SKAN → ned och bläddra till rätt lista. Kontrollera listans namn och att skanning är på.',
+   ],note:'Du hör inte flera samtidiga talmeddelanden på en gång. Prioriteringen avgör vilken trafik terminalen släpper fram. Bakgrundstalgrupper kan passas även när vanlig skanning är av.',
+   sources:[handbook('bild 28: Skannade talgrupper; bild 40: bakgrundstalgrupper'),ref('knappologi och display-1 (1).pdf','s. 30: Smartmeny'),ref('Skanninglistor.pdf','s. 4 och 6–9'),ref('Skanning.pdf','s. 8–9')]},
+  {id:'status',title:'Skicka statusar',topics:['21'],
+   lead:'En status är ett fördefinierat meddelande, oftast till RLC. Välj anropsbegäran när du behöver förklara något eller besvara följdfrågor.',
+   steps:[
+    'Tryck två gånger på mittvalsknappen. Bläddra med vred eller pilar till rätt status.',
+    'Välj Sänd och kontrollera mottagaren, i kursens vanliga flöde ”Skicka till hemma KC” (= hemma-RLC).',
+    'Alternativ väg: Meny → Meddelanden → Statusmeddelande. Välj status, öppna med Öppna/Mer och välj mottagare enligt menyn.',
+    'Påbörjat uppdrag: långt tryck på höger eller vänster pil från grunddisplayen enligt kursens SC21-programmering. Ett kort piltryck är navigering.',
+    'På POLMAN: tryck två gånger på vredet eller välj en av de vanliga statusarna i fliken Status. Kontrollera vad snabbvalet skickar.',
+   ],correction:'Smartmenyn # har vissa färdiga statusgenvägar. ”Fri status” är en annan funktion och ersätter inte den vanliga listan med statusmeddelanden.',
+   sources:[ref('Status.pdf','s. 1, 5–7'),ref('knappologi och display-1 (1).pdf','s. 14–15 och 30'),handbook('bild 9–10: status och fri status')]},
+  {id:'profiler',title:'Användarprofiler',topics:['06','27'],
+   lead:'Fem profiler i kursens handterminal: Normal, Normal tyst, Natt, Span och Tyst. De samlar inställningar för bland annat ljus, ljud och vibration.',
+   steps:[
+    'Tryck tre gånger på mittvalsknappen från grunddisplayen.',
+    'Vrid vredet tills rätt profil visas.',
+    'Bekräfta med PTT, vänster valknapp eller grön lur enligt Kunskapsbanken för SC21. Kontrollera profilen i displayen.',
+    'Öva på att förklara skillnaden: Natt släcker displaybelysningen; Span har vibration för individanrop och nya meddelanden; Tyst tar även bort ljud/vibration för nytt SDS eller status enligt kursens profiltabell.',
+   ],note:'Normal tyst betyder inte att alla ljud är av. På kursens SC21 ger långt tryck på sidoknapp B normal ljudprofil och C nattprofil. Kontrollera aktuell programmering.',
+   sources:[ref('knappologi och display-1 (1).pdf','s. 8–9 och 13'),handbook('bild 19: välja profil')]},
+  {id:'sds',title:'Skicka SDS',topics:['19'],
+   lead:'SDS är Rakels textmeddelande. Träna med en övningskontakt och en ofarlig övningstext.',
+   steps:[
+    'Pil ned → Meny → Meddelanden → Skapa meddelande (kan heta Nytt meddelande på annan version).',
+    'Skriv med sifferknapparna. Kursen visar flertrycksinmatning: tryck samma tangent upprepade gånger för bokstäverna på den. T9 är inte en förutsättning.',
+    'Välj Sänd, eller Mer → Skicka enligt terminalens meny.',
+    'Välj en sparad kontakt eller ange mottagarens nummer. Vid nummerinmatning: välj nummertyp med upp-/nedpil. Stående radiosymbol = ISSI; liggande radiosymbol = MSISDN.',
+    'Kontrollera mottagare och nummertyp innan du skickar. Kontrollera därefter terminalens sändningsbesked; ett meddelande i utkorgen är inte i sig bevis på att mottagaren har läst det.',
+   ],note:'ISSI identifierar den enskilda terminalen. Polisens taktiska MSISDN i kursen består av myndighetssiffran 1 följd av anropssignalens sex siffror, utan bindestreck. Använd inga riktiga nummer i webbträningen.',
+   sources:[ref('Meddelanden SDS.pdf','s. 1–3'),ref('Rakel ABC.pdf','s. 3 och 5: MSISDN och symboler')]},
+  {id:'individsamtal',title:'Individsamtal',topics:['18','12'],
+   lead:'Skriv eller välj mottagarens ISSI/MSISDN och kontrollera radiosymbolen. Välj sedan rätt samtalstyp.',
+   table:{headers:['Samtalstyp','Knapp och arbetssätt'],rows:[
+    ['Semiduplex','Starta/besvara med PTT. En pratar åt gången: håll PTT när du talar och släpp för att lyssna.'],
+    ['Duplex','Starta/besvara med grön lur. Båda kan prata samtidigt, som i ett vanligt telefonsamtal. På handterminalen används hördelen mot örat.'],
+   ]},
+   correction:'I anteckningen var duplex och semiduplex omkastade. Rätt är PTT = semiduplex och grön lur = duplex.',
+   steps:['ISSI: välj stående radiosymbol. MSISDN: välj liggande radiosymbol. Telefonsymbolen är en annan nummertyp.','Kontrollera att samtalet är uppkopplat, använd rätt trafikuttryck och avsluta enligt terminalens meny/röda lur. På fordonsterminal/POLMAN används monofon och utrustningens PTT.'],
+   note:'Kursmaterialet rekommenderar semiduplex när det fungerar för uppgiften, eftersom duplex kan ta mer nätkapacitet.',
+   sources:[ref('Individsamtal-1.pdf','s. 2–5'),ref('Rakel ABC.pdf','s. 1 och 5')]},
+  {id:'kontaktbok',title:'Kontaktboken',topics:['20','12'],
+   lead:'Spara rätt nummertyp, oavsett om kontakten gäller en handterminal eller en fordonsterminal. POLMAN styr fordonsterminalen; det är radion som har ISSI.',
+   steps:[
+    'Öppna Meny → Kontakter → fliken Meny → Skapa kontakt.',
+    'Skriv ett övningsnamn och välj Spara enligt kursens kontaktmeny.',
+    'Ange det tilldelade ISSI-numret och välj stående radiosymbol, eller taktiskt MSISDN och liggande radiosymbol. ISSI går till terminalens identitet; MSISDN används för det taktiska numret.',
+    'Avsluta registreringen med Avsluta enligt kursens meny. Öppna kontakten igen och kontrollera namn, hela numret och symbolen.',
+    'För att berätta vilket ISSI din egen terminal har: öppna Meny → Info eller långt tryck på # → Infomeny (7 i kursens smartmeny). Läs posten för terminalens ISSI/individnummer. Blanda inte ihop den med taktiskt anropsnummer eller MSISDN.',
+   ],note:'Det är nummertypen som avgör symbolen, inte om apparaten sitter i en bil. Exakta fält i Info skiljer mellan modeller; använd lärarens visning om terminalen visar en längre ITSI-identitet.',
+   sources:[ref('Kontakter-1.pdf','s. 2–3'),ref('Individsamtal-1.pdf','s. 3–4'),ref('ISSI-1.pdf','terminalens identitet'),ref('knappologi och display-1 (1).pdf','s. 30: Infomeny')]},
+  {id:'egen',title:'Mappen Egen',topics:['16'],
+   lead:'En favoritmapp för grupper du snabbt vill hitta. Öva på lektionsuppgiften: fyra valfria övningstalgrupper och åtkomst via DV 7.',
+   steps:copiedSteps('egen'),
+   correction:'Egen skannar inte automatiskt alla grupper. Kontrollera vilken talgrupp som verkligen är displaylagd; underlaget säger inte att den översta alltid måste bli vald.',
+   note:'I lektionsanteckningen ligger Egen högst upp i trädet. Kursbilden placerar den mellan Version och Reg MPU. Placeringen beror på programmeringen. Bläddra i Egen med ett tryck på mittvalsknappen och sedan vredet.',
+   sources:lesson('egen').sources.filter(s=>!s.title.startsWith('Lektionsanteckningar'))},
+  {id:'programmera-direktval',title:'Programmera direktval',topics:['15','16'],
+   lead:'Exempel: gör Egen åtkomlig från DV 7 när de fyra övningsgrupperna har lagts in.',
+   steps:[
+    'Pil ned → Meny → Talgrupper → Direktval. Markera Direktval 7.',
+    'Välj Mer → Välj talgrupp. Bläddra till Egen i gruppträdet och bekräfta det önskade valet enligt terminalens meny.',
+    'Återgå till grunddisplayen och håll inne 7. Kontrollera mappen, tryck på mittvalsknappen och prova att bläddra mellan grupperna med vredet.',
+    'Alternativet Mer → Välj kopierar det som för tillfället är displaylagt. Kontrollera därför först både grupp och mapp/lista om du använder det alternativet.',
+   ],correction:'Menyvägen går via Talgrupper → Direktval. Du ska inte först gå in i Skannade talgrupper.',
+   note:'Kursens regler: DV 1 ska innehålla en skanninglista, DV 9 en RAPS-talgrupp och DV 7 kan innehålla valfri talgrupp eller Egen. Återställ efter övningen enligt lärarens instruktion.',
+   sources:[ref('Direktval programmering.pdf','s. 1–2'),ref('Mappen Egen-2.pdf','s. 1–2')]},
+  {id:'programmera-skanning',title:'Programmera skanningslista',topics:['14'],
+   lead:'Lektionsuppgiften: Projekt 1 som vald grupp, plus Order reg och rätt lokal ordertalgrupp.',
+   steps:[
+    'Pil ned → Meny → Talgrupper → Skanningslistor. Välj en ledig, programmerbar övningslista, exempelvis SKAN 1. Tryck Öppna och sedan Ändra.',
+    'Välj Mer → Lägg till. Bläddra fram Projekt 1 i rätt region och välj. Upprepa för Order reg och den lokala ordertalgrupp som läraren anger.',
+    'Markera varje talgrupp och ändra prioriteten med vänster-/högerpil enligt SC21-guiden. Projekt 1: låg/grön. Båda ordertalgrupperna: hög/röd.',
+    'Markera Projekt 1 och tryck Välj så att pricken i ringen visar att den ska vara displaylagd. Välj Mer → Spara.',
+    'Öppna gruppträdet med ett tryck på mittvalsknappen/vredet. Bläddra till huvudmappen SKAN, gå ned och välj din sparade skanninglista.',
+    'Kontrollera att listan är displaylagd och att skanning är på. Aktivera vid behov via Meny → Talgrupper → Skanning På/Av. Kontrollera mappnamnet SKAN under talgruppsnamnet och granska Skannade talgrupper.',
+   ],
+   correction:'Grön pil betyder låg prioritet. Vilken grupp som är vald för displayen markeras separat med pricken i ringen. I denna övning ska Projekt 1 ha båda markeringarna.',
+   note:'Öppna den ändringsbara listan och använd dess redigeringsval (Öppna/Ändra/Lägg till enligt aktuell meny). SKAN är kursens mappnamn; SCAN förekommer i anteckningen. Order prioriteras över den interna gruppen i kursens exempel. Följ sambandsplanen när andra grupper ingår.',
+   sources:[...lesson('skanning').sources.filter(s=>!s.title.startsWith('Lektionsanteckningar')),handbook('bild 27: skapa egen skanningslista')]},
+  {id:'gateway',title:'Upprätta en gateway',topics:['17','10','11'],
+   lead:'Fordonets radio länkar en tilldelad talgrupp i nätläge till en överenskommen DMO-talgrupp. Handterminalen når nätet genom denna länk.',
+   steps:copiedSteps('gateway').map(s=>s.startsWith('Avsluta efter anvisning:')?'Avsluta efter anvisning: samordna nedkopplingen med RLC och berörda användare. Frigör insatstalgruppen när RLC bekräftar att den inte längre behövs. Återställ fordon och handterminal till nätläge och anvisad normalpassning; kontrollera sambandet.':s),
+   correction:'Fordonet ska stå kvar i Gateway. Det är handterminalen som ställs i direktläge. Samma DMO-talgrupp ska väljas på båda sidor.',
+   note:'Är ni redan på en insats kan den tilldelade insatstalgruppen användas efter samordning med RLC. Informera fortfarande RLC om gateway. Kursen beskriver anropsbegäran med långt tryck på 2 via gateway; RLC ser då gatewayterminalens/fordonets anropssignal. Säg därför vem som provar och att provet gäller gateway. Frigör en insatstalgrupp först när RLC bekräftar att den inte längre behövs.',
+   diagram:'gateway',sources:[ref('Gateway KORT.pdf','s. 3'),ref('Gateway-1.pdf','s. 13–16')]},
+  {id:'polman',title:'POLMAN',topics:['29','28'],
+   lead:'POLMAN är manöverpanelen till fordonsterminalen. Sambandsprinciperna är desamma, men knappar, ljudväg och menyvisning skiljer sig från handterminalen.',
+   steps:[
+    'Öppna Rakelvyn. Volymvredet är också mode-knapp: tryck på vredet i de steg där handterminalen använder mittvalsknappen. Använd pilar och vred för gruppval/index.',
+    'Använd Rakelvyns siffertangenter för direktval med långt tryck. På DV 8 finns även Gateway och Repeater på kursens fordonsterminal.',
+    'Status: två tryck på vredet eller fliken Status. SDS: öppna SDS-funktionen/Meddelanden. Kontrollera mottagare och ISSI/MSISDN även här.',
+    'Använd monofon/fordonets PTT och kontrollera ljudvägen. DV 0 på fordonet ska inte beskrivas som att hålla hela POLMAN-panelen mot örat.',
+    'Öva gruppbyte, kontakter, Egen, direktval och skanninglista i fordonets Rakelmenyer. Bekräfta resultatet i fordonsradions display; din handterminal ändras inte automatiskt.',
+    'Gateway upprättas i fordonsterminalen via POLMAN, medan handterminalen ställs i DMO. Kontrollera båda enheterna och gör förbindelseprov.',
+   ],note:'Bildens förslag tar upp POLMAN och gateway. Examinatorns tidigare besked beskriver en individuell praktisk examination med handterminal. Bilden fastställer inte hur eller om fordon/POLMAN ska examineras; träna momenten och följ lärarens slutliga besked.',
+   sources:[ref('Polman.pdf','s. 5 och 10'),ref('Status.pdf','s. 5 och 7'),ref('Byta talgrupp.pdf','s. 2'),ref('Driftsätt.pdf','fordonsterminalens driftsätt')]},
+ ]},
+ {id:'written',title:'Förslag på vad du kan träna på:',label:'Skriftlig förberedelse',items:[
+  {id:'bokstavering',title:'Bokstavering nationell/internationell',topics:['04'],
+   lead:'Skriv båda alfabeten ur minnet innan du öppnar tabellen. Träna sedan blandade bokstäver och hela ord.',
+   table:{headers:['Bokstav','Nationell','Internationell (kursen)'],rows:alphabets},
+   note:'Tabellen följer kursens stavningar Alpha och Juliet samt Å, Ä och Ö som två bokstaveringsord. Siffror sägs på svenska i kursens radiotrafik även när internationell bokstavering används. Båda bokstaveringsdelarna kräver 100 % enligt examinatorns besked.',
+   sources:[ref('Bokstavering.pdf','s. 2–4'),ref('Examinatorns information','återgiven 2026-09-28')]},
+  {id:'regioner',title:'Regioner',topics:['03','05','30','31'],
+   lead:'Lär dig regionernas nummer och ledningscentralernas anrop. Skilj polisregion från Rakelregion när du bygger ett taktiskt anropsnummer.',
+   table:{headers:['Nummer','Polisregion / organisation','Ledningscentral'],rows:[
+    ['1','Nord','1-0 · Umeå'],['2','Mitt','2-0 · Uppsala'],['3','Stockholm','3-0 · Stockholm'],['4','Öst','4-0 · Linköping'],['5','Väst','5-0 · Göteborg'],['6','Syd','6-0 · Malmö'],['7','Bergslagen','7-0 · Örebro'],['8','NOA (nationell organisation)','8-0 · NLC i Stockholm'],['9','Polisutbildningen','Skolspecifikt anrop enligt sambandstablån'],
+   ]},
+   note:'Sju polisregioner. 8 och 9 är inte ytterligare geografiska polisregioner. Mitt och Bergslagen delar Rakelregion 2 i kursens nummerplan; Bergslagens RLC anropas ändå 7-0. Räkna därför inte automatiskt fram varje terminals taktiska nummer från polisregionens listnummer.',
+   sources:[ref('Regioner och anrop till RLC.pdf','s. 1–5'),ref('Anropssignaler, nummerplan.pdf','nummerplanen')]},
+  {id:'trafikuttryck',title:'Trafikuttryck',topics:['01','02'],
+   lead:'SMURFFKKV hjälper dig minnas nio uttryck. På provet behöver du också kunna använda dem i rätt situation.',
+   table:{headers:['Uttryck','När du använder det'],rows:[
+    ['S · SLUT KOM','Du har inget mer att tillföra i ditt initierade individsamtal med RLC. Lämna till RLC att avsluta.'],
+    ['M · MITTÅT / FEL','Rätta en egen felsägning och säg sedan den korrekta uppgiften.'],
+    ['U · UPPFATTAT','Bekräfta att du förstått. Ange vem som har uppfattat meddelandet.'],
+    ['R · REPETERA','Be om det som var oklart. Precisera exempelvis ”repetera adressen”.'],
+    ['F · FÖRTUR','Bryt in i pågående radiotrafik med mer brådskande information. Detta är ett talat uttryck.'],
+    ['F · FRÅN','Markera avsändaren: ”[mottagare] från [egen anropssignal], kom”.'],
+    ['K · KLART SLUT','Avsluta samtalet. RLC avslutar vid kontakt med RLC; mellan patruller avslutar den som inledde.'],
+    ['K · KOM','Lämna över ordet och begär svar.'],
+    ['V · VÄNTA','Markera ett kort uppehåll innan du återkommer.'],
+   ]},
+   note:'Exempel på rättelse: ”[Egen anropssignal], östra infarten, mittåt, västra infarten, kom.” Förtursbegäran via terminalens knapp är ett annat handgrepp än det talade uttrycket FÖRTUR.',
+   sources:[ref('Trafikuttryck - SMURFF KKV (1).pdf','s. 2–10'),ref('Trafikuttryck.pdf','s. 2–4')]},
+  {id:'gateway-metodik',title:'Metodik upprätta en gateway',topics:['17','10','11'],
+   lead:'Förklara behovet, sambandsvägen, samordningen, förbindelseprovet och återställningen med egna ord.',
+   steps:[
+    'Behov: handterminalen har otillräcklig nätkontakt, men fordonets radio kan stå där den når nätet och de berörda handterminalerna.',
+    'Samordning: meddela RLC och bekräfta insatstalgrupp och DMO-talgrupp. Samordna även när ni redan har en tilldelad insatstalgrupp.',
+    'Koppling: fordon i Gateway mellan nätets insatstalgrupp och vald DMO; handterminalerna i direktläge på samma DMO.',
+    'Kontroll: kontrollera gatewaykontakt och gör förbindelseprov hela vägen till RLC. Provet ska ge svar tillbaka till handterminalen.',
+    'Avslut: samordna nedkoppling med RLC och berörda användare. Återgå till nätläge och rätt normalpassning. Frigör gruppen när den inte längre behövs.',
+   ],note:'Gateway länkar DMO till nätet. Repeater förlänger direktlägessamband och är inte samma funktion. Gateway löser inte ett läge där även gatewayterminalen saknar nätkontakt.',
+   diagram:'gateway',sources:[ref('Gateway KORT.pdf','s. 1–3'),ref('Gateway-1.pdf','s. 13–16'),ref('Driftsätt.pdf','Gateway och Repeater')]},
+  {id:'forflyttning',title:'Metodik geografisk förflyttning',topics:['30','31'],
+   lead:'Sambandet ska följa det område där du arbetar och det RLC som leder arbetet. En ändrad geografisk position byter inte automatiskt din normalpassning.',
+   steps:[
+    'Inom regionen: kontrollera vilket PO/RO/LPO du ska arbeta i. Displaylägg rätt skanninglista från SKAN med områdets intern- och ordertalgrupper. Kontrollera skanning.',
+    'Till annan region: samordna med RLC och kontrollera mottagande regions sambandstablå. Displaylägg dess RLC-talgrupp med rätt namn/index.',
+    'Skicka anropsbegäran till det RLC vars talgrupp är displaylagd genom långt tryck på grön lur enligt kursmetoden. DV 2 och sidoknapp A går fortfarande till hemma-RLC.',
+    'Meddela vem ni är, var ni är, uppgift och samband. Följ anvisningen om ordertalgrupp/skanninglista och kontrollera att ni kan nås.',
+    'När ni lämnar regionen: meddela det RLC som ni varit i kontakt med och återställ rätt passning för nästa område. Kontrollera både hand- och fordonsterminal.',
+   ],note:'Långt tryck på grön lur med en RLC-talgrupp displaylagd är en anropsbegäran. Det ska skiljas från grön lur efter ett inslaget individnummer, som används för duplexsamtal.',
+   sources:[ref('Georgrafisk förflyttning Canvas-1.pdf','s. 4–9'),ref('Regioner och anrop till RLC.pdf','s. 1–5')]},
+  {id:'forvaring',title:'Förvaringsregler',topics:['26'],
+   lead:'Återge reglerna för personlig handterminal, gemensam handterminal och fordonsterminal var för sig.',
+   steps:[
+    'Personlig handterminal: håll den under uppsikt eller förvara den i ett låst och larmat utrymme. När den inte används/förvaras enligt kursens rutin ska batteriet vara urtaget.',
+    'Gemensam handterminal: samma krav på uppsikt eller låst och larmat utrymme samt urtaget batteri vid förvaring.',
+    'Stäng av terminalen och vänta tills displayen är släckt innan du tar ur batteriet. Förvaringsregeln innebär inte att batteriet ska tas ur en radio som används.',
+    'Fordonsterminal: fordonet ska om möjligt bevakas vid uppställning. En terminal som lämnas obevakad under längre tid ska göras obrukbar i nätet genom spärrning hos Servicedesk. Kursen tar också upp spärrning vid extern fordonsservice.',
+    'Längre frånvaro: Kunskapsbanken anger att en personligt tilldelad handterminal lämnas till Servicedesk i region/avdelning/enhet vid frånvaro i 90 dagar eller mer. Återlämna också vid avslutad tjänst enligt lokal rutin.',
+   ],note:'Kursmaterialet anger Servicedesk 020-666 999 för spärrning; kontrollera aktuell intern kontaktväg inför verklig användning. Underlagen formulerar frånvarogränsen olika: Kunskapsbanken säger ”90 dagar eller mer”, bladet Regler hantering säger ”mer än 90 dagar”. Följ lärarens aktuella besked.',
+   sources:[ref('Kunskapsbanken STP9000, version 1.0 (2023-01-11)','bild 76: Förvaring'),handbook('bild 3: avstängning och batteri; bild 76: Förvaring'),ref('Regler hantering av terminaler-1.pdf','s. 2')]},
+  {id:'forlust',title:'Förlust av radio',topics:['26'],
+   lead:'Den här punkten finns också i bilden. En förlorad terminal ska spärras och anmälas.',
+   steps:[
+    'Kontakta Servicedesk snarast och begär spärrning av den förlorade terminalen. Kursmaterialet anger 020-666 999; använd aktuell intern kontaktväg.',
+    'Upprätta en polisanmälan om stöld/förlust så att terminalen blir sökbar som gods i de ordinarie systemen.',
+    'Underrätta sambandsansvarig (SA). Följ rutinen för ersättningsterminal och bifoga kopia på anmälan enligt kursmaterialet.',
+   ],note:'Förklara både varför spärrning behövs och varför en anmälan ska göras. En anmälan ersätter inte spärrningen.',
+   sources:[ref('Regler hantering av terminaler-1.pdf','s. 3'),handbook('Borttappad/stulen Rakelterminal')]},
+  {id:'kapacitet',title:'Nätets kapacitet',topics:['25'],
+   lead:'Kapacitet handlar om hur mycket trafik nätet klarar samtidigt. Täckning handlar om att radiosignalen når fram.',
+   steps:[
+    'En carrier (bärvåg) har fyra tidsluckor. Minst en lucka per basstation används som kontrollkanal för signalering och bland annat SDS/status. Med en kontrollkanal ger en carrier tre talluckor, två carriers sju.',
+    'Nätet fördelar lediga talresurser när samtal behövs. Gruppsamtal delar resurser mellan lyssnarna; fler samtidiga samtal och aktiva talgrupper ökar belastningen. En talgrupp som är sparad men inte används är inte ett pågående samtal.',
+    'Vid hög belastning kan anrop köas. Håll kvar PTT när terminalen visar kö och vänta på klart-att-tala-indikeringen; släpper du lämnar du kön.',
+    'Använd gemensamma talgrupper och god radiodisciplin. Undvik onödiga individsamtal, särskilt duplex. Anpassa skanning och använd lokal DMO när sambandsplanen medger det. Stäng inte av föreskriven orderpassning på eget initiativ.',
+   ],note:'Antalet talluckor är ett räkneexempel, inte ett fast antal för hela Rakelnätet. En basstation kan få kö trots god signalstyrka. Gateway använder fortfarande kapacitet på nätets sida.',
+   diagram:'capacity',sources:[{title:'MSB: Vägledning i Rakel',location:'s. 7–9 och 31, kontrollerad 2026-10-08',url:'https://rib.msb.se/filer/pdf/28980.pdf'}]},
+ ]},
+];
+
+function diagram(type){
+ if(type==='gateway')return '<div class="gateway-flow" aria-label="Sambandsväg via gateway"><div><strong>Handterminal</strong><span>Direktläge · vald DMO</span></div><span aria-hidden="true">↔</span><div><strong>Fordon: Gateway</strong><span>Samma DMO ↔ insatstalgrupp i TMO</span></div><span aria-hidden="true">↔</span><div><strong>Rakelnätet / RLC</strong><span>Bekräftad förbindelse åt båda håll</span></div></div>';
+ if(type==='capacity')return '<figure class="capacity-figure"><figcaption>Exempel: en carrier med en kontrollkanal</figcaption><div class="capacity-slots"><span>Kontroll</span><span>Tal 1</span><span>Tal 2</span><span>Tal 3</span></div></figure>';
+ return '';
+}
+
+export function examPreviewView({heading,btn,escape}){
+ const table=t=>`<div class="preview-table-wrap" tabindex="0" role="region" aria-label="${escape(t.headers.join(', '))}"><table class="preview-table"><thead><tr>${t.headers.map(h=>`<th scope="col">${escape(h)}</th>`).join('')}</tr></thead><tbody>${t.rows.map(row=>`<tr>${row.map((v,i)=>`<${i?'td':'th scope="row"'}>${escape(v)}</${i?'td':'th'}>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+ const card=(item,i,group)=>`<details class="lesson-card preview-card" id="preview-${item.id}"><summary><span class="lesson-number">${i+1}</span><span><strong>${escape(item.title)}</strong><span class="lesson-device">${group.label} · Visa ${group.id==='hands'?'handgrepp':'svar och förklaring'}</span></span><span class="lesson-toggle" aria-hidden="true">+</span></summary><div class="lesson-body"><p>${escape(item.lead)}</p>${item.correction?`<p class="notice warning"><strong>Rättelse / precisering:</strong> ${escape(item.correction)}</p>`:''}${diagram(item.diagram)}${item.steps?`<ol class="lesson-steps">${item.steps.map(s=>`<li>${escape(s)}</li>`).join('')}</ol>`:''}${item.table?table(item.table):''}${item.note?`<p class="notice">${escape(item.note)}</p>`:''}<details class="source"><summary>Källor och delmoment</summary><p>Delmoment ${item.topics.join(', ')} · Svar kontrollerat ${previewDate}. Menynamn kan variera med modell och programmering.</p>${item.sources.map(s=>`<p>${s.url?`<a href="${escape(s.url)}" target="_blank" rel="noopener noreferrer">${escape(s.title)}</a>`:escape(s.title)} · ${escape(s.location)}</p>`).join('')}<p>Kursens originalfiler läses i ditt kursmaterial och publiceras inte här.</p></details><div class="row footactions">${btn('Träna med egna svar','topic',`data-id="${item.topics[0]}"`,'secondary')}${btn('Tillbaka till översikten','preview-top','','soft')}</div></div></details>`;
+ return `${heading('07 / INFO INFÖR EXAMINATIONEN','Knappa. Förklara. Träna.','Översikten från bilden, med handgrepp för den praktiska delen och svarsstöd för den skriftliga.')}<p class="preview-context"><strong>Förslag inför examinationen</strong> · Bild och anteckningar tillförda 8 oktober 2026. Förslaget ersätter inte examinatorns besked eller de 31 delmomenten.</p><section id="preview-overview" class="preview-board" tabindex="-1" aria-label="Träningsförslag enligt bilden">${previewGroups.map(g=>`<div class="preview-column"><h2>${escape(g.title)}</h2><ul>${g.items.map(item=>`<li><button type="button" data-action="preview-open" data-id="${item.id}" aria-controls="preview-${item.id}">${escape(item.title)}</button></li>`).join('')}</ul></div>`).join('')}</section><p class="source">Samma rubriker, punkter och ordning som i bilden. Klicka på en punkt för instruktioner. På mobil visas rutorna efter varandra.</p><div class="notice"><strong>Kontrollerat och kompletterat</strong><p>PTT = semiduplex, grön lur = duplex. DV 9 gäller RAPS. DV 0 ändrar ljudvägen. Svaren nedan innehåller fler rättelser och källhänvisningar.</p></div><div class="row preview-actions">${btn('Visa alla instruktioner','lesson-expand','','secondary')}${btn('Fäll ihop alla','lesson-collapse','','soft')}${btn('Examinationsvillkor & provpass','nav','data-view="prov"','soft')}</div>${previewGroups.map(g=>`<section class="preview-answer-section" aria-labelledby="heading-${g.id}"><p class="eyebrow">${g.label}</p><h2 id="heading-${g.id}">${escape(g.title)}</h2><div class="lesson-list">${g.items.map((item,i)=>card(item,i,g)).join('')}</div></section>`).join('')}`;
+}
