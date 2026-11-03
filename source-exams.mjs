@@ -19,7 +19,12 @@ export const paperQuestions=[
  'Skanningen ska vara aktiverad. Det räcker inte med en valfri skanninglista eller en enskild intern talgrupp.']),
  q(5,'Dynamisk talgrupp',1,'4','2',[
  'Ni träffar er kollega Ersin. Han har förstärkt på IGV i Söderort i Stockholm under några veckor och behövde programmera en skanninglista. Alla regioners ordertalgrupper fanns i terminalen, men han behövde också den interna talgruppen IGV Söderort. RLC Stockholm skickade ut den som dynamisk talgrupp till Ersin.',
- 'Ange namnet på den mapp där dynamiskt tilldelade talgrupper hamnar då de tilldelas en terminal.'],['DYNA.']),
+ 'Ange namnet på den mapp där dynamiskt tilldelade talgrupper hamnar då de tilldelas en terminal.'],[
+ 'DGNA. Det är mappen där dynamiskt tilldelade talgrupper hamnar.',
+ 'DGNA står för Dynamic Group Number Assignment. RLC tilldelar talgruppen trådlöst via luftgränssnittet när du behöver en grupp som inte finns bland terminalens fasta talgrupper.',
+ 'Mappen DGNA visas först när en dynamisk talgrupp har skickats ut till terminalen.',
+ 'I kursens programmering får den första dynamiska talgruppen index 9901, den andra 9902 och så vidare.',
+ 'De fasta, inprogrammerade talgrupperna kallas statiska talgrupper. Sambandsansvarig (SA) avgör vilka du behöver utifrån din roll och var du tjänstgör.'],{note:'På själva tentafrågan räcker mappnamnet DGNA som svar.',sources:[`${sourceFiles.paper}, s. 4`,`${sourceFiles.answers}, s. 2`,'Kunskapsbanken SC21, bild 38 och 41']}),
  q(6,'Felsökning',1,'5–6','3',[
  'När Ersin hade programmerat sin skanninglista i Stockholm lade han den på direktval 1. Hemma igen har han programmerat om DV1 för att arbeta på IGV i POSS.',
  'Ni pratar i utrustningsrummet. När RLC går ut på ordertalgruppen med en allmän efterspaning kopplar din terminal upp ordertalgruppen, men inte Ersins. Efter ett långt tryck på DV1 visar hans display ”Igv POSS”. Du ser att Ersin gjort en felaktig inställning. Vad behöver han göra för att ha normalpassning?'],[
