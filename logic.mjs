@@ -1,10 +1,11 @@
 import {questions,topics} from './data.mjs';
 import {scenarios,exercises} from './practice.mjs';
 import {focusedQuestions,partById,practicalTasks} from './examination.mjs';
+import {blankPapers,sanitizePapers} from './source-exams.mjs';
 export const items=[...questions,...scenarios,...exercises,...focusedQuestions];
 export const itemMap=new Map(items.map(i=>[i.id,i]));
 export const STORAGE_KEY='samband-tentatraning:v1';
-export const blankState=()=>({schema:1,status:{},reviews:{},drafts:{},exam:null,history:[],practical:{}});
+export const blankState=()=>({schema:1,status:{},reviews:{},drafts:{},exam:null,history:[],practical:{},papers:blankPapers()});
 export function shuffle(arr,random=Math.random){const out=[...arr];for(let i=out.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[out[i],out[j]]=[out[j],out[i]];}return out;}
 export function shuffledSteps(steps,random=Math.random){let a=shuffle(steps.map((_,i)=>i),random);if(a.every((n,i)=>n===i))a=[...a.slice(1),a[0]];return a;}
 export function checkOrder(order,length){return order.length===length&&order.every((n,i)=>n===i);}
@@ -29,6 +30,7 @@ const cleanAnswers=(v,ids)=>Object.fromEntries(Object.entries(obj(v)?v:{}).filte
 export function sanitizeState(raw){
  if(!obj(raw)||raw.schema!==1)throw new Error('Okänt sparformat');
  const s=blankState();
+ s.papers=sanitizePapers(raw.papers);
  for(const t of topics)if([0,1,2].includes(raw.status?.[t.id]))s.status[t.id]=raw.status[t.id];
  for(const item of items){const r=raw.reviews?.[item.id];if(obj(r)&&[0,1,2].includes(r.grade))s.reviews[item.id]={grade:r.grade,at:Number.isFinite(r.at)?r.at:0,attempts:Number.isFinite(r.attempts)?r.attempts:1};}
  s.drafts=cleanAnswers(raw.drafts,items.map(i=>i.id));
